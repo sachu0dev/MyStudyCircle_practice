@@ -1,0 +1,9 @@
+.left{
+  align-items: start;
+  text-align: start;
+}
+.right{
+  align-items: end;
+  text-align: end;
+
+}

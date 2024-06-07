@@ -20,6 +20,17 @@ io.on("connection", (socket)=>{
   console.log("id:", socket.id);
   socket.emit("welcome", "welcome to socket.io");
   socket.broadcast.emit("newUser", socket.id);
+
+  socket.on("message", ({message , room})=>{
+    console.log( {message, room});
+    io.to(room).emit("receive-message", message);
+  })
+
+  socket.on("disconnect", ()=>{
+    console.log("user disconnected");
+  })
+
+
 })
 
 app.get('/', (req, res) => {
