@@ -30,7 +30,10 @@ io.on("connection", (socket)=>{
     console.log("user disconnected");
   })
 
-
+  socket.on("joinRoom", ({roomName})=>{
+    socket.join(roomName);
+    console.log("user joined room", roomName);
+  })
 })
 
 app.get('/', (req, res) => {

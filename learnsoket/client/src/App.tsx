@@ -10,13 +10,18 @@ export default function App() {
   const [room, setRoom] = useState("");
   const [socketId, setSocketId] = useState("");
   const [messages, setMessages] = useState([]);
-  const [myMessages, setMyMessages] = useState([]);
+  const [roomName, setRoomName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     socket.emit("message", { message, room });
-    setMyMessages((prev) => [...prev, message]);
-    setMessage("");
+    // setMessage("");
+  };
+
+  const joinRoomHandler = (e) => {
+    e.preventDefault();
+    socket.emit("joinRoom", { roomName });
+    setRoomName("");
   };
 
   useEffect(() => {
@@ -49,6 +54,21 @@ export default function App() {
         <Typography variant="h3" component="div" gutterBottom>
           Hello, {socketId}
         </Typography>
+
+        <form onSubmit={joinRoomHandler}>
+          <h5>Join Room</h5>
+          <TextField
+            id="outlined-basic"
+            label="Room Name"
+            variant="outlined"
+            value={roomName}
+            onChange={(e) => setRoomName(e.target.value)}
+          />
+          <Button variant="contained" color="primary" type="submit">
+            join
+          </Button>
+        </form>
+
         <form onSubmit={handleSubmit}>
           <TextField
             id="outlined-basic"
@@ -74,12 +94,7 @@ export default function App() {
             <div className="messageBox">
               {messages.reverse().map((m) => (
                 <div className="left">
-                  <p>{m}</p>
-                </div>
-              ))}
-              {myMessages.reverse().map((m) => (
-                <div className="right">
-                  <p>{m}</p>
+                  <p key={m}>{m}</p>
                 </div>
               ))}
             </div>
